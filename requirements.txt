@@ -2,3 +2,7 @@ fastapi
 uvicorn
 pydantic
 pika
+sqlalchemy
+psycopg2-binary
+jinja2
+python-dotenv
