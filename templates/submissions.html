@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Список заявок</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff0f5;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      color: #cc6699;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+    }
+    th {
+      background: #f8a1c4;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Список заявок</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Имя</th>
+        <th>Email</th>
+        <th>Сообщение</th>
+        <th>Источник</th>
+        <th>Когда отправлено</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in submissions %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.message }}</td>
+        <td>{{ item.source }}</td>
+        <td>{{ item.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

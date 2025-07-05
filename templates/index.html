@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Обратная связь</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: url("/static/images/bg_feedback.png") center/cover no-repeat;
+        background-color: #ffeef6;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white bg-opacity-90 shadow-2xl rounded-xl p-8 w-full max-w-md">
+      <h1 class="text-2xl font-bold mb-2 text-center text-pink-600">Обратная связь</h1>
+      <p class="text-center text-gray-500 mb-4">[Ты добавишь свой текст сюда]</p>
+      <form id="feedback-form" class="space-y-4">
+        <input type="text" name="name" placeholder="Ваше имя" required
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300" />
+
+        <input type="email" name="email" placeholder="Email" required
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300" />
+
+        <span id="email-error" class="text-red-500 text-sm hidden">Формат email должен быть example@mail.ru</span>
+
+        <textarea name="message" placeholder="Ваше сообщение" required
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300 resize-none"
+          rows="4"></textarea>
+
+        <button type="submit"
+          class="w-full bg-pink-300 text-white py-2 rounded-lg hover:bg-pink-400 transition">Отправить</button>
+      </form>
+
+      <p id="status" class="mt-4 text-center text-green-600 font-medium"></p>
+
+      <!-- Кнопка просмотра заявок -->
+      <div class="mt-6 text-center">
+        <a href="/submissions"
+           class="inline-block px-6 py-2 rounded-lg text-white font-medium shadow-md transition hover:shadow-lg"
+           style="background-color: #d16ba5;">
+          Посмотреть все заявки
+        </a>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("feedback-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const emailField = form.email;
+        const errorSpan = document.getElementById("email-error");
+        const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+        if (!emailRegex.test(emailField.value)) {
+          errorSpan.classList.remove("hidden");
+          return;
+        } else {
+          errorSpan.classList.add("hidden");
+        }
+
+        const data = {
+          name: form.name.value,
+          email: form.email.value,
+          message: form.message.value,
+          source: "web"
+        };
+
+        const res = await fetch("/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        document.getElementById("status").innerText = result.message || "Заявка отправлена!";
+        form.reset();
+      });
+    </script>
+  </body>
+</html>
